@@ -13,6 +13,7 @@ const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const HardSourcePlugin = require('hard-source-webpack-plugin')
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -377,6 +378,7 @@ module.exports = {
       fileName: 'asset-manifest.json',
       publicPath: publicPath,
     }),
+    new HardSourcePlugin()
   ],
 
   // Some libraries import Node modules but don't use them in the browser.
