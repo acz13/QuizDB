@@ -9,11 +9,24 @@ import ThirdPartyIcons from "./ThirdPartyIcons";
 
 import {
   formatQuestionString,
+  formatQuestionElement,
 } from '../../utilities/Question';
 
-const Tossup = ({ question, query }) => {
-  const formattedText = formatQuestionString(question.formatted_text, query);
-  const formattedAnswer = formatQuestionString(question.formatted_answer, query);
+import ReadingText from './ReadingText';
+
+const Tossup = ({ question, query, reading, buzzed, paused, speed }) => {
+  const formattedText =  reading
+                           ? <ReadingText
+                                text={formatQuestionString(question.formatted_text, query)}
+                                buzzed={buzzed}
+                                paused={paused}
+                                speed={speed}
+                              />
+                           : formatQuestionElement(question.formatted_text, query);
+  
+  const formattedAnswer = buzzed || !reading
+                            ? formatQuestionElement(question.formatted_answer, query)
+                            : "Press Buzz to reveal answer";
 
   return (
     <div className="question-content">
@@ -28,7 +41,7 @@ const Tossup = ({ question, query }) => {
                    className='question-hidden-answer'
                    value={question.answer} readOnly/>
           </Grid.Column>
-          <ThirdPartyIcons question={question} />
+          {(buzzed || !reading) && <ThirdPartyIcons question={question} />}
         </Grid>
       </Segment>
     </div>

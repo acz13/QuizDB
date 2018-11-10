@@ -25,9 +25,11 @@ class QuestionsComponent extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {showInfo: false};
+    this.state = {showInfo: false, reading: true, buzzed: false, paused: true, speed: 200};
     this.renderInfo = this.renderInfo.bind(this);
     this.renderInfoColumn = this.renderInfoColumn.bind(this);
+    this.handleBuzz = this.handleBuzz.bind(this);
+    this.handlePause = this.handlePause.bind(this);
   }
 
   componentWillMount() {
@@ -64,6 +66,7 @@ class QuestionsComponent extends React.Component {
     }
 
     let showInfo = !!this.state.showInfo;
+    const isSmall = this.props.browser.lessThan.medium;
     return <Segment className="question-info">
       <div className="question-info-skinny">
         <span>
@@ -74,9 +77,21 @@ class QuestionsComponent extends React.Component {
           />
         </span>
         {infoDivSkinny}
-        <Button content='Errors in question?'
+        {/* <Button content='Errors in question?'
                 className='error-modal-trigger short'
-                onClick={() => p.dispatch(toggleErrorModal(q.id))}/>
+                onClick={() => p.dispatch(toggleErrorModal(q.id))}/> */}
+        {p.questionType === "tossup" && (
+          <div>
+	        <Button icon color='yellow' labelPosition={isSmall ? "" : "left"} onClick={this.handlePause}>
+	          <Icon name='pause' />
+	          {isSmall ? "" : (this.state.paused ? "Unpause" : "Pause")}
+	        </Button>
+	        <Button icon color='red' labelPosition={isSmall ? "" : "left"} onClick={this.handleBuzz}>          
+	          <Icon name='bell outline' />
+	          {isSmall ? "" : "Buzz"}
+	        </Button>
+     	  </div>
+     	)}
       </div>
       {infoDivTall}
     </Segment>;
@@ -96,13 +111,24 @@ class QuestionsComponent extends React.Component {
     </Segment>
   }
 
+  handlePause() {
+    this.setState({ paused: !this.state.paused });
+  }
+
+  handleBuzz() {
+    this.setState({ buzzed: true });
+  }
+
   render() {
     const p = this.props;
     const q = p.question;
     const highlightQuery = p.storage.highlightSearch ? p.search.query : null;
-    const questionView = p.questionType === "tossup" ?
-      <Tossup question={q} query={highlightQuery} /> :
-      <Bonus question={q} query={highlightQuery} />;
+    const questionView = p.questionType === "tossup"
+      ? <Tossup question={q} query={highlightQuery} reading={this.state.reading}
+                                                  buzzed={this.state.buzzed}
+                                                  paused={this.state.paused}
+                                                  speed={this.state.speed} />
+      : <Bonus question={q} query={highlightQuery} />;
     return (
       <div className='question'>
         <Segment.Group>

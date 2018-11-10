@@ -42,10 +42,13 @@ function escapeRegexSpecial(str) {
 export function formatQuestionString(str, query=null) {
   let newStr = cleanString(str);
   if (query) {
-    newStr = newStr.replace(new RegExp(escapeRegexSpecial(query), 'gi'), `<mark class='question-highlight'>$&</mark>`);
+    return newStr.replace(new RegExp(escapeRegexSpecial(query), 'gi'), `<mark class='question-highlight'>$&</mark>`);
   }
-  newStr = <span dangerouslySetInnerHTML={{__html: newStr}}/>;
   return newStr;
+}
+
+export function formatQuestionElement(str, query=null) {
+  return <span dangerouslySetInnerHTML={{__html: formatQuestionString(str, query)}}></span>;
 }
 
 export function extractTossupText(tossup) {

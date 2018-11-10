@@ -29,9 +29,7 @@ class SearchForm extends React.Component {
     this.triggerSearch = this.triggerSearch.bind(this);
     this.handleInputKeyPress = this.handleInputKeyPress.bind(this);
     this.handleRandomDropdownChange = this.handleRandomDropdownChange.bind(this);
-  }
 
-  componentWillMount() {
     const p = this.props;
     if (!p.search.filterOptions) {
       p.dispatch(fetchFilterOptions());
@@ -60,12 +58,13 @@ class SearchForm extends React.Component {
 
   render() {
     const randomOptions = [
+      {text: '1 Question', value: 1, onClick: this.handleRandomDropdownChange},
       {text: '5 Questions', value: 5, onClick: this.handleRandomDropdownChange},
       {text: '10 Questions', value: 10, onClick: this.handleRandomDropdownChange},
       {text: '25 Questions', value: 25, onClick: this.handleRandomDropdownChange},
       {text: '50 Questions', value: 50, onClick: this.handleRandomDropdownChange},
       {text: '100 QUESTIONS!!', value: 100, onClick: this.handleRandomDropdownChange},
-    ]
+    ];
 
     return <div className="search"><Container>
       <Grid stackable columns={2} textAlign={"center"}
@@ -126,13 +125,13 @@ class SearchForm extends React.Component {
         )
       }
 
-    </Container></div>
+    </Container></div>;
   }
 }
 
 SearchForm.propTypes = {
   onSearch: PropTypes.func.isRequired,
-}
+};
 
 const mapStateToProps = state => {
   return {
