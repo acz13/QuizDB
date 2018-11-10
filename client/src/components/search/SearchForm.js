@@ -58,7 +58,6 @@ class SearchForm extends React.Component {
 
   render() {
     const randomOptions = [
-      {text: '1 Question', value: 1, onClick: this.handleRandomDropdownChange},
       {text: '5 Questions', value: 5, onClick: this.handleRandomDropdownChange},
       {text: '10 Questions', value: 10, onClick: this.handleRandomDropdownChange},
       {text: '25 Questions', value: 25, onClick: this.handleRandomDropdownChange},
